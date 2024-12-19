@@ -1,9 +1,16 @@
 import { Request, Response } from 'express'
 import Book, { IBook } from '../models/book.model'
+import {
+  getBooks as getBooksService,
+  getBook as getBookService,
+  createBook as createBookService,
+  updateBook as updateBookService,
+  deleteBook as deleteBookService,
+} from '../services/book.services'
 
 export const getBooks = async (req: Request, res: Response) => {
   try {
-    const books = await Book.find()
+    const books = await getBooksService()
     res.json(books)
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -12,7 +19,7 @@ export const getBooks = async (req: Request, res: Response) => {
 
 export const getBook = async (req: Request, res: Response) => {
   try {
-    const book = await Book.findById(req.params.id)
+    const book = await getBookService(req.params.id)
     res.json(book)
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -21,10 +28,8 @@ export const getBook = async (req: Request, res: Response) => {
 
 export const createBook = async (req: Request, res: Response) => {
   const { title, author, year }: IBook = req.body
-  const newBook = new Book({ title, author, year })
-
   try {
-    await newBook.save()
+    const newBook = await createBookService(req.body)
     res.status(201).json(newBook)
   } catch (error) {
     res.status(400).json({ message: error.message })
@@ -33,9 +38,7 @@ export const createBook = async (req: Request, res: Response) => {
 
 export const updateBook = async (req: Request, res: Response) => {
   try {
-    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    })
+    const updatedBook = await updateBookService(req.params.id, req.body)
     res.json(updatedBook)
   } catch (error) {
     res.status(400).json({ message: error.message })
@@ -44,7 +47,7 @@ export const updateBook = async (req: Request, res: Response) => {
 
 export const deleteBook = async (req: Request, res: Response) => {
   try {
-    await Book.findByIdAndDelete(req.params.id)
+    await deleteBookService(req.params.id)
     res.json({ message: 'Book deleted' })
   } catch (error) {
     res.status(500).json({ message: error.message })
