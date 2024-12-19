@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import Book, { IBook } from '../models/book.model'
 import {
   getBooks as getBooksService,
   getBook as getBookService,
@@ -27,7 +26,6 @@ export const getBook = async (req: Request, res: Response) => {
 }
 
 export const createBook = async (req: Request, res: Response) => {
-  const { title, author, year }: IBook = req.body
   try {
     const newBook = await createBookService(req.body)
     res.status(201).json(newBook)

@@ -1,4 +1,3 @@
-import { IBook } from '../models/book.model'
 import {
   findAll,
   findById,
@@ -15,11 +14,18 @@ export const getBook = async (id: string) => {
   return await findById(id)
 }
 
-export const createBook = async (book: IBook) => {
+export const createBook = async (book: {
+  title: string
+  author: string
+  year: number
+}) => {
   return await save(book)
 }
 
-export const updateBook = async (id: string, book: IBook) => {
+export const updateBook = async (
+  id: string,
+  book: { title: string; author: string; year: number }
+) => {
   return await update(id, book)
 }
 
