@@ -4,7 +4,7 @@ import {
   getBook as getBookService,
   createBook as createBookService,
   updateBook as updateBookService,
-  deleteBook as deleteBookService,
+  deleteBook as deleteBookService
 } from '../services/book.services'
 
 export const getBooks = async (req: Request, res: Response) => {

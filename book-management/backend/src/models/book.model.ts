@@ -10,7 +10,7 @@ const bookSchema: Schema = new Schema(
   {
     title: { type: String, required: true },
     author: { type: String, required: true },
-    year: { type: Number, required: true },
+    year: { type: Number, required: true }
   },
   { timestamps: true }
 )

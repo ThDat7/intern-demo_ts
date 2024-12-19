@@ -3,7 +3,7 @@ import {
   findById,
   save,
   update,
-  remove,
+  remove
 } from '../repositories/book.repositories'
 
 export const getBooks = async () => {

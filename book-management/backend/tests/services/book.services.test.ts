@@ -3,14 +3,14 @@ import {
   getBook,
   createBook,
   updateBook,
-  deleteBook,
+  deleteBook
 } from '../../src/services/book.services'
 import * as repository from '../../src/repositories/book.repositories'
 import { describe, test, expect, beforeEach, jest } from '@jest/globals'
 
 const mockBooks = [
   { title: 'Book One', author: 'Author One', year: 2021 },
-  { title: 'Book Two', author: 'Author Two', year: 2022 },
+  { title: 'Book Two', author: 'Author Two', year: 2022 }
 ]
 
 jest.mock('../../src/repositories/book.repositories', () => ({
@@ -18,7 +18,7 @@ jest.mock('../../src/repositories/book.repositories', () => ({
   findById: jest.fn(),
   save: jest.fn(),
   update: jest.fn(),
-  remove: jest.fn(),
+  remove: jest.fn()
 }))
 
 describe('Book Service Tests', () => {
@@ -57,7 +57,7 @@ describe('Book Service Tests', () => {
       id: '1',
       title: 'Updated Book',
       author: 'Updated Author',
-      year: 2024,
+      year: 2024
     }
     ;(repository.update as jest.Mock).mockReturnValue(updatedBook)
     const book = await updateBook('1', updatedBook)

@@ -4,7 +4,7 @@ import {
   getBook,
   createBook,
   updateBook,
-  deleteBook,
+  deleteBook
 } from '../controllers/book.controller'
 
 const router = express.Router()

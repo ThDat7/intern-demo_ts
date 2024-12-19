@@ -13,7 +13,7 @@ app.use(express.json())
 mongoose
   .connect(mongoUri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   } as ConnectOptions)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error(err))
