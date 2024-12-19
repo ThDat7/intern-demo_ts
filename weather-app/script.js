@@ -25,13 +25,21 @@ async function fetchWeather(lat, lon) {
   return response.json()
 }
 
-$('.city').on(
+function debounce(func, delay) {
+  let timeout
+  return function (...args) {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func.apply(this, args), delay)
+  }
+}
+
+document.querySelector('.city').addEventListener(
   'input',
-  _.debounce(async (event) => {
+  debounce(async (event) => {
     const query = event.target.value.trim()
     const cities = await fetchSuggestions(query)
 
-    $('.suggestions').html(`
+    document.querySelector('.suggestions').innerHTML = `
       <ul class="list-group">
         ${cities
           .map(
@@ -40,27 +48,29 @@ $('.city').on(
           )
           .join('')}
       </ul>
-    `)
+    `
 
-    $('.list-group-item').on('click', function () {
-      const city = $(this).text()
-      selectedLat = $(this).data('lat')
-      selectedLon = $(this).data('lon')
+    document.querySelectorAll('.list-group-item').forEach((item) =>
+      item.addEventListener('click', function () {
+        const city = item.textContent
+        selectedLat = item.dataset.lat
+        selectedLon = item.dataset.lon
 
-      $('.city').val(city)
-      $('.suggestions').html('')
-    })
+        document.querySelector('.city').value = city
+        document.querySelector('.suggestions').innerHTML = ''
+      })
+    )
   }, 500)
 )
 
-$('.search').on('click', async () => {
-  const weatherDiv = $('.weather')
-  const errorDiv = $('.error')
-  weatherDiv.html('')
-  errorDiv.text('')
+document.querySelector('.search').addEventListener('click', async () => {
+  const weatherDiv = document.querySelector('.weather')
+  const errorDiv = document.querySelector('.error')
+  weatherDiv.innerHTML = ''
+  errorDiv.textContent = ''
 
   if (!selectedLat || !selectedLon) {
-    errorDiv.text('Please select a city from the suggestions')
+    errorDiv.textContent = 'Please select a city from the suggestions'
     return
   }
 
@@ -68,7 +78,7 @@ $('.search').on('click', async () => {
     const data = await fetchWeather(selectedLat, selectedLon)
     const { name, main, weather, wind } = data
 
-    weatherDiv.html(`
+    weatherDiv.innerHTML = `
       <div class="card mx-auto" style="max-width: 400px;">
         <div class="card-body">
           <h2 class="card-title">${name}</h2>
@@ -79,8 +89,8 @@ $('.search').on('click', async () => {
           <img src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png" alt="${weather[0].description}" class="img-fluid">
         </div>
       </div>
-    `)
+    `
   } catch (error) {
-    errorDiv.text(error.message)
+    errorDiv.textContent = error.message
   }
 })
